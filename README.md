@@ -11,5 +11,3 @@ A Flutter todo app typically works by allowing the user to create and manage a l
 6. The user can edit or delete any existing task by tapping on it and selecting the appropriate action from a menu.
 7. The app updates the list of tasks to reflect any changes made by the user.
 8. The app may also provide additional features, such as sorting tasks by due date or priority level, filtering tasks by category or status, or notifying the user when a task is due.
-
-Overall, a Flutter todo app relies on user input and data persistence to manage a list of tasks and provide a user-friendly interface for organizing and completing them.
