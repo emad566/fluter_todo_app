@@ -38,6 +38,6 @@ flutter_icons:
 flutter:
   uses-material-design: true
   assets:
-    - images/person.jpeg
-    - images/task.svg
+    - assets/images/person.jpeg
+    - assets/images/task.svg
 
