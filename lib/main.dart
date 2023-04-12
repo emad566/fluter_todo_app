@@ -1,6 +1,8 @@
+import 'package:fluter_todo_app/ui/pages/notification_screen.dart';
+import 'package:fluter_todo_app/ui/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import 'ui/pages/home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,10 +13,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return GetMaterialApp(
+      theme: Themes.lightThem,
+      darkTheme: Themes.darkThem,
+      themeMode: ThemeMode.light,
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: const NotificationScreen(payload: 'Notif Screen',),
     );
   }
 }
