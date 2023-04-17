@@ -16,66 +16,68 @@ const Color darkHeaderClr = Color(0xFF424242);
 class Themes {
   static final ThemeData lightThem = ThemeData(
     primaryColor: primaryClr,
+    scaffoldBackgroundColor: whiteClr,
     colorScheme: ThemeData().colorScheme.copyWith(
-      background: primaryClr,
+      background: whiteClr,
       brightness: Brightness.light,
     ),
   );
 
   static final ThemeData darkThem = ThemeData(
     primaryColor: darkGreyClr,
+    scaffoldBackgroundColor: darkGreyClr,
     colorScheme: ThemeData().colorScheme.copyWith(
       background: darkGreyClr,
       brightness: Brightness.dark,
     ),
   );
 
-  TextStyle get headingStyle {
+  static TextStyle get headingStyle {
     return GoogleFonts.lato(
         textStyle: TextStyle(
-          color: Get.isDarkMode? blackClr : whiteClr,
+          color: Get.isDarkMode? whiteClr : blackClr,
           fontSize: 24,
           fontWeight: FontWeight.bold,
         ),
     );
   }
-  TextStyle get subHeadingStyle {
+  static TextStyle get subHeadingStyle {
     return GoogleFonts.lato(
       textStyle: TextStyle(
-        color: Get.isDarkMode? blackClr : whiteClr,
+        color: Get.isDarkMode? whiteClr : blackClr,
         fontSize: 20 ,
         fontWeight: FontWeight.bold,
       ),
     );
   }
-  TextStyle get titleStyle {
+  static TextStyle get titleStyle {
     return GoogleFonts.lato(
       textStyle: TextStyle(
-        color: Get.isDarkMode? blackClr : whiteClr,
+        color: Get.isDarkMode? whiteClr : blackClr,
         fontSize: 18 ,
         fontWeight: FontWeight.bold,
       ),
     );
   }
-  TextStyle get subTitleStyle {
+  static TextStyle get subTitleStyle {
     return GoogleFonts.lato(
       textStyle: TextStyle(
-        color: Get.isDarkMode? blackClr : whiteClr,
+        color: Get.isDarkMode? whiteClr : blackClr,
         fontSize: 16 ,
         fontWeight: FontWeight.w400,
       ),
     );
   }
-  TextStyle get bodyStyle {
+  static TextStyle get bodyStyle {
     return GoogleFonts.lato(
       textStyle: TextStyle(
-        color: Get.isDarkMode? blackClr : whiteClr,
+        color: Get.isDarkMode? whiteClr : blackClr,
         fontSize: 14 ,
         fontWeight: FontWeight.w400,
       ),
     );
   }
-  TextStyle get body2Style {
+  static TextStyle get body2Style {
     return GoogleFonts.lato(
       textStyle: TextStyle(
         color: Get.isDarkMode? grey200 : whiteClr,

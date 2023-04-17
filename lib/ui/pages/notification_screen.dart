@@ -1,4 +1,5 @@
 import 'package:fluter_todo_app/ui/theme.dart';
+import 'package:fluter_todo_app/ui/widgets/components.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -22,18 +23,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Get.back(),
-          icon: const Icon(Icons.arrow_back),
-        ),
-        elevation: 0,
-        backgroundColor: context.theme.colorScheme.background,
-        title: Text(
-          _payload.toString().split('|')[0],
-          style: TextStyle(color: Get.isDarkMode? Colors.white : darkGreyClr),
-        ),
-      ),
+      appBar: myAppBar(setState: setState, context: context, title: _payload.toString().split('|')[0]),
       body: SafeArea(
         child: Column(
           children: [
