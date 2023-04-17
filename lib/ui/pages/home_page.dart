@@ -2,6 +2,7 @@ import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:date_picker_timeline/extra/color.dart';
 import 'package:date_picker_timeline/extra/style.dart';
 import 'package:fluter_todo_app/controllers/task_controller.dart';
+import 'package:fluter_todo_app/services/notification_services.dart';
 import 'package:fluter_todo_app/ui/pages/add_task_page.dart';
 import 'package:fluter_todo_app/ui/size_config.dart';
 import 'package:fluter_todo_app/ui/theme.dart';
@@ -21,6 +22,15 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late NotifyHelper notifyHelper;
+  @override
+  void initState() {
+    super.initState();
+    notifyHelper = NotifyHelper();
+    notifyHelper.requestIOSPermissions();
+    notifyHelper.initializeNotification();
+  }
+
   final TaskController _taskController = Get.put(TaskController());
   late DateTime _selectedDate = DateTime.now();
 
@@ -94,7 +104,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-        SizedBox(height: 20,),
+        const SizedBox(height: 20,),
         MyButton(
           label: '+ Add Task',
           onTab: () async{

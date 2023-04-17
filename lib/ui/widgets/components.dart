@@ -1,3 +1,4 @@
+import 'package:fluter_todo_app/services/notification_services.dart';
 import 'package:fluter_todo_app/services/theme_services.dart';
 import 'package:fluter_todo_app/ui/theme.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:get/get.dart';
 
 
 AppBar myAppBar ({Function? setState, BuildContext? context, String? title, bool isLeading = true}){
+
   return AppBar(
     leading: !isLeading? null : IconButton(
       onPressed: () => Get.back(),
@@ -32,6 +34,8 @@ AppBar myAppBar ({Function? setState, BuildContext? context, String? title, bool
             setState(() {
               print(Get.isDarkMode);
               ThemeServices().switchTheme();
+              NotifyHelper().displayNotification(title: 'Switched', body: 'body');
+              NotifyHelper().scheduleNotification();
             });
           }
         },
