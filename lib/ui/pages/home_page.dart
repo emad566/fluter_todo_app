@@ -2,12 +2,14 @@ import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:date_picker_timeline/extra/color.dart';
 import 'package:date_picker_timeline/extra/style.dart';
 import 'package:fluter_todo_app/controllers/task_controller.dart';
+import 'package:fluter_todo_app/models/task.dart';
 import 'package:fluter_todo_app/services/notification_services.dart';
 import 'package:fluter_todo_app/ui/pages/add_task_page.dart';
 import 'package:fluter_todo_app/ui/size_config.dart';
 import 'package:fluter_todo_app/ui/theme.dart';
 import 'package:fluter_todo_app/ui/widgets/button.dart';
 import 'package:fluter_todo_app/ui/widgets/components.dart';
+import 'package:fluter_todo_app/ui/widgets/task_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -139,8 +141,32 @@ class _HomePageState extends State<HomePage> {
   }
 
   _showTasks() {
-    return Container(
-      child: _noTasks(),
+    return GestureDetector(
+      onTap: (){
+        _showBottomSheet(context, Task(
+            color: 0,
+            title: 'Fist task',
+            date: '2023-12-04',
+            startTime: '2023-12-04',
+            endTime: '2023-12-04',
+            id: 1,
+            isCompleted: 0,
+            note: 'Task not note note not sdsd vewf',
+            remind: 5,
+          ),
+        );
+      },
+      child: TaskTile(task: Task(
+        color: 0,
+        title: 'Fist task',
+        date: '2023-12-04',
+        startTime: '2023-12-04',
+        endTime: '2023-12-04',
+        id: 1,
+        isCompleted: 0,
+        note: 'Task not note note not sdsd vewf',
+        remind: 5,
+      ),),
     );
   }
 
@@ -177,6 +203,101 @@ class _HomePageState extends State<HomePage> {
           ),
         )
       ],
+    );
+  }
+
+  _showBottomSheet(BuildContext context, Task task){
+    Get.bottomSheet(
+      SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.only(top: 4),
+          width: SizeConfig.screenWidth,
+          height: (SizeConfig.orientation == Orientation.landscape)?
+            task.isCompleted == 1? SizeConfig.screenHeight *0.6 : SizeConfig.screenHeight *0.8
+            :task.isCompleted == 1? SizeConfig.screenHeight *0.35 : SizeConfig.screenHeight *0.50,
+          color: Get.isDarkMode? darkHeaderClr : whiteClr,
+          child: Column(
+            children: [
+              Flexible(
+                child: Container(
+                  height: 6,
+                  width: 120,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Get.isDarkMode? Colors.grey[600] : Colors.grey[300],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20,),
+              task.isCompleted == 1 ?
+                  Container()
+                  : _buildBottomSheet(
+                    label: 'Task Completed',
+                    onTap: (){
+                      Get.back();
+                    },
+                    clr: primaryClr
+                  ),
+              Divider(color: Get.isDarkMode? Colors.grey : darkGreyClr,),
+              _buildBottomSheet(
+                  label: 'Delete Task',
+                  onTap: (){
+                    Get.back();
+                  },
+                  clr: primaryClr
+              ),
+              Divider(color: Get.isDarkMode? Colors.grey : darkGreyClr,),
+              _buildBottomSheet(
+                  label: 'Cancel',
+                  onTap: (){
+                    Get.back();
+                  },
+                  clr: primaryClr
+              ),
+              const SizedBox(height: 20,),
+            ],
+          ),
+        ),
+      )
+    );
+  }
+
+  _buildBottomSheet({
+    required String label,
+    required Function() onTap,
+    required Color clr,
+    bool  isClose = false
+  }){
+    return GestureDetector(
+      onTap: (){
+        Get.back();
+      },
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        padding: EdgeInsets.only(top: 18),
+        height: 65,
+        width: SizeConfig.screenWidth * 0.9,
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 2,
+            color: isClose?
+                Get.isDarkMode? Colors.grey[600]! : Colors.grey[300]!
+                : clr,
+          ),
+          borderRadius: BorderRadius.circular(20),
+          color: isClose? Colors.transparent : clr,
+        ),
+        child: Text(
+          label,
+          style: isClose?
+                Themes.titleStyle
+                :
+                Themes.titleStyle.copyWith(
+                    color: whiteClr,
+                  ),
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 }

@@ -35,7 +35,7 @@ AppBar myAppBar ({Function? setState, BuildContext? context, String? title, bool
               print(Get.isDarkMode);
               ThemeServices().switchTheme();
               NotifyHelper().displayNotification(title: 'Switched', body: 'body');
-              NotifyHelper().scheduleNotification();
+              // NotifyHelper().scheduleNotification();
             });
           }
         },
