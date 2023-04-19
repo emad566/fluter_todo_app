@@ -49,7 +49,7 @@ class TaskTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Icon(Icons.access_time_rounded, color: grey200, size: 18,),
-                        const SizedBox(height: 12,),
+                        const SizedBox(width: 12,),
                         Text(
                           '${task.startTime} - ${task.endTime}',
                           style: GoogleFonts.lato(
@@ -61,6 +61,7 @@ class TaskTile extends StatelessWidget {
                         )
                       ],
                     ),
+                    const SizedBox(height: 12,),
                     Text(
                       task.note,
                       style: GoogleFonts.lato(

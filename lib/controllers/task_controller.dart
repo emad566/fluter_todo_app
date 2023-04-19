@@ -1,59 +1,89 @@
 import 'package:fluter_todo_app/models/task.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class TaskController extends GetxController{
 
   final List<Task> taskList=  [
     Task(
-      color: 0,
+      color: 3,
       title: 'Fist task',
-      date: '2023-12-04',
-      startTime: '2023-12-04',
-      endTime: '2023-12-04',
+      date: '2023-04-19',
+      startTime: DateFormat('hh:mm a')
+                .format(DateTime.now().add(const Duration(minutes: 1)))
+                .toString(),
+
+      endTime: DateFormat('hh:mm a')
+                .format(DateTime.now().add(const Duration(minutes: 2)))
+                .toString(),
       id: 1,
       isCompleted: 0,
       note: 'Task not note note not sdsd vewf',
       remind: 5,
     ),
+
     Task(
-      color: 0,
+      color: 2,
       title: 'Fist task',
-      date: '2023-12-04',
-      startTime: '2023-12-04',
-      endTime: '2023-12-04',
+      date: '2023-04-19',
+      startTime: DateFormat('hh:mm a')
+                .format(DateTime.now().add(const Duration(minutes: 1)))
+                .toString(),
+
+      endTime: DateFormat('hh:mm a')
+                .format(DateTime.now().add(const Duration(minutes: 2)))
+                .toString(),
       id: 1,
       isCompleted: 0,
       note: 'Task not note note not sdsd vewf',
       remind: 5,
     ),
+
     Task(
       color: 0,
       title: 'Fist task',
-      date: '2023-12-04',
-      startTime: '2023-12-04',
-      endTime: '2023-12-04',
+      date: '2023-04-19',
+      startTime: DateFormat('hh:mm a')
+                .format(DateTime.now().add(const Duration(minutes: 1)))
+                .toString(),
+
+      endTime: DateFormat('hh:mm a')
+                .format(DateTime.now().add(const Duration(minutes: 2)))
+                .toString(),
       id: 1,
-      isCompleted: 0,
+      isCompleted: 1,
       note: 'Task not note note not sdsd vewf',
       remind: 5,
     ),
+
     Task(
-      color: 0,
+      color: 1,
       title: 'Fist task',
-      date: '2023-12-04',
-      startTime: '2023-12-04',
-      endTime: '2023-12-04',
+      date: '2023-04-19',
+      startTime: DateFormat('hh:mm a')
+                .format(DateTime.now().add(const Duration(minutes: 1)))
+                .toString(),
+
+      endTime: DateFormat('hh:mm a')
+                .format(DateTime.now().add(const Duration(minutes: 2)))
+                .toString(),
       id: 1,
-      isCompleted: 0,
+      isCompleted: 1,
       note: 'Task not note note not sdsd vewf',
       remind: 5,
     ),
+
     Task(
       color: 0,
       title: 'Fist task',
-      date: '2023-12-04',
-      startTime: '2023-12-04',
-      endTime: '2023-12-04',
+      date: '2023-04-19',
+      startTime: DateFormat('hh:mm a')
+                .format(DateTime.now().add(const Duration(minutes: 1)))
+                .toString(),
+
+      endTime: DateFormat('hh:mm a')
+                .format(DateTime.now().add(const Duration(minutes: 2)))
+                .toString(),
       id: 1,
       isCompleted: 0,
       note: 'Task not note note not sdsd vewf',

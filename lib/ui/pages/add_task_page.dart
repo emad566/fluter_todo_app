@@ -25,6 +25,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   final String _startTime = DateFormat('hh:mm a')
       .format(DateTime.now())
       .toString();
+
   final String _endTime = DateFormat('hh:mm a')
       .format(DateTime.now().add(const Duration(minutes: 15)))
       .toString();

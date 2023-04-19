@@ -146,6 +146,14 @@ class _HomePageState extends State<HomePage> {
       scrollDirection: SizeConfig.orientation == Orientation.landscape? Axis.horizontal : Axis.vertical,
       itemBuilder: (BuildContext context, int index){
         Task task = _taskController.taskList[index];
+        var hour = int.parse(task.startTime.toString().split(':')[0]);
+        var minutes = int.parse(task.startTime.toString().split(':')[1]);
+
+        // var date = DateFormat.jm().parse(task.startTime);
+        // var mTime = DateFormat('HH:mm').format(date);
+
+        NotifyHelper().scheduleNotification(hour, minutes, task);
+
         return AnimationConfiguration.staggeredList(
           position: index,
           duration: const Duration(milliseconds: 1000),
@@ -268,7 +276,7 @@ class _HomePageState extends State<HomePage> {
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 4),
-        padding: EdgeInsets.only(top: 18),
+        padding: const EdgeInsets.only(top: 18),
         height: 65,
         width: SizeConfig.screenWidth * 0.9,
         decoration: BoxDecoration(
