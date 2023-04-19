@@ -1,13 +1,15 @@
+import 'package:intl/intl.dart';
+
 class Task {
   
   int? id;
-  final String title;
-  final String note;
-  final int isCompleted;
-  final String date;
-  final String startTime;
-  final String endTime;
-  final int color;
+  late String title;
+  late String note;
+  late int isCompleted;
+  late String date;
+  late String startTime;
+  late String endTime;
+  late int color;
   int? remind;
   String? repeat;
 
@@ -40,18 +42,16 @@ class Task {
     };
   }
 
-  static Task fromJson(Map<String, dynamic> map) {
-    return Task(
-      id: map['id'],
-      title: map['title'],
-      note: map['note'],
-      isCompleted: map['isCompleted'],
-      date: map['date'],
-      startTime: map['startTime'],
-      endTime: map['endTime'],
-      color: map['color'],
-      remind: map['remind'],
-      repeat: map['repeat'],
-    );
+  Task.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    title = json['title']?? '';
+    note = json['note']?? '';
+    isCompleted = json['isCompleted'] == null? 0 : int.parse(json['isCompleted']);
+    date = json['date']?? DateTime.now().toString();
+    startTime = json['startTime']?? '00:00:00';
+    endTime = json['endTime']?? '00:00:00';
+    color = json['color'] == null? 0 : int.parse(json['color']);
+    remind = json['remind'] == null? 0 : int.parse(json['remind']);
+    repeat = json['repeat']?? '';
   }
 }

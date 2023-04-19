@@ -1,105 +1,29 @@
 import 'dart:ui';
 
+import 'package:fluter_todo_app/db/db_helper.dart';
 import 'package:fluter_todo_app/models/task.dart';
 import 'package:fluter_todo_app/ui/theme.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 class TaskController extends GetxController{
   static final List<Color> taskColors = [primaryClr, pinkClr, orangeClr];
 
-  final List<Task> taskList=  [
-    Task(
-      color: 3,
-      title: 'Fist task',
-      date: '2023-04-19',
-      startTime: DateFormat('hh:mm a')
-                .format(DateTime.now().add(const Duration(minutes: 1)))
-                .toString(),
+  late List<Task> taskList=  <Task>[].obs;
 
-      endTime: DateFormat('hh:mm a')
-                .format(DateTime.now().add(const Duration(minutes: 2)))
-                .toString(),
-      id: 1,
-      isCompleted: 0,
-      note: 'Task not note note not sdsd vewf',
-      remind: 5,
-    ),
-
-    Task(
-      color: 2,
-      title: 'Fist task',
-      date: '2023-04-19',
-      startTime: DateFormat('hh:mm a')
-                .format(DateTime.now().add(const Duration(minutes: 1)))
-                .toString(),
-
-      endTime: DateFormat('hh:mm a')
-                .format(DateTime.now().add(const Duration(minutes: 2)))
-                .toString(),
-      id: 1,
-      isCompleted: 0,
-      note: 'Task not note note not sdsd vewf',
-      remind: 5,
-    ),
-
-    Task(
-      color: 0,
-      title: 'Fist task',
-      date: '2023-04-19',
-      startTime: DateFormat('hh:mm a')
-                .format(DateTime.now().add(const Duration(minutes: 1)))
-                .toString(),
-
-      endTime: DateFormat('hh:mm a')
-                .format(DateTime.now().add(const Duration(minutes: 2)))
-                .toString(),
-      id: 1,
-      isCompleted: 1,
-      note: 'Task not note note not sdsd vewf',
-      remind: 5,
-    ),
-
-    Task(
-      color: 1,
-      title: 'Fist task',
-      date: '2023-04-19',
-      startTime: DateFormat('hh:mm a')
-                .format(DateTime.now().add(const Duration(minutes: 1)))
-                .toString(),
-
-      endTime: DateFormat('hh:mm a')
-                .format(DateTime.now().add(const Duration(minutes: 2)))
-                .toString(),
-      id: 1,
-      isCompleted: 1,
-      note: 'Task not note note not sdsd vewf',
-      remind: 5,
-    ),
-
-    Task(
-      color: 0,
-      title: 'Fist task',
-      date: '2023-04-19',
-      startTime: DateFormat('hh:mm a')
-                .format(DateTime.now().add(const Duration(minutes: 1)))
-                .toString(),
-
-      endTime: DateFormat('hh:mm a')
-                .format(DateTime.now().add(const Duration(minutes: 2)))
-                .toString(),
-      id: 1,
-      isCompleted: 0,
-      note: 'Task not note note not sdsd vewf',
-      remind: 5,
-    )
-  ];
-
-  void getTasks(){
-
+  void getTasks() async{
+    final List<Map<String, dynamic>> tasks = await DBHelper.query();
+    taskList = tasks.map((task) => Task.fromJson(task)).toList();
   }
 
-  addTask({required task}) {
+  Future<int> addTask({required task}) async{
+    return await DBHelper.insert(task);
+  }
 
+  Future<int> deleteTask({required taskId}) async{
+    return await DBHelper.delete(taskId);
+  }
+
+  Future<int> updateToCompleted({required taskId}) async{
+    return await DBHelper.update(taskId);
   }
 }

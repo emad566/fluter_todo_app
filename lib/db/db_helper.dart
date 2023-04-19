@@ -52,7 +52,7 @@ class DBHelper {
     return await _db!.delete(_tableName, where: 'id = ?', whereArgs: [task.id]);
   }
 
-  static Future<List<Map<String, dynamic>>> query(Task task) async{
+  static Future<List<Map<String, dynamic>>> query() async{
     debugPrint('Start query');
     return await _db!.query(_tableName);
   }
