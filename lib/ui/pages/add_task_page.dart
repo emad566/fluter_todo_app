@@ -22,12 +22,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _noteController = TextEditingController();
 
-  final DateTime _selectedDate = DateTime.now();
-  final String _startTime = DateFormat('hh:mm a')
+  late DateTime _selectedDate = DateTime.now();
+  late String _startTime = DateFormat('hh:mm a')
       .format(DateTime.now())
       .toString();
 
-  final String _endTime = DateFormat('hh:mm a')
+  late String _endTime = DateFormat('hh:mm a')
       .format(DateTime.now().add(const Duration(minutes: 15)))
       .toString();
 
@@ -63,7 +63,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
               InputField(
                 label: 'Date',
                 hintText: DateFormat.yMd().format(_selectedDate),
-                widget: const Icon(Icons.calendar_month),
+                widget: IconButton(
+                  onPressed: (){
+                    _getDateFromUser();
+                  },
+                  icon: const Icon(Icons.calendar_month)
+                ),
               ),
               const SizedBox(height: 10,),
               Row(
@@ -73,7 +78,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     child: InputField(
                       label: 'Start Time',
                       hintText: _startTime,
-                      widget: const Icon(Icons.alarm),
+                      widget: IconButton(
+                        onPressed: (){
+                          _getTimeFromUser(isStartTime:true);
+                        },
+                        icon: const Icon(Icons.alarm)
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10,),
@@ -82,7 +92,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     child: InputField(
                       label: 'End Time',
                       hintText: _endTime,
-                      widget: const Icon(Icons.alarm),
+                      widget: IconButton(
+                        onPressed: (){
+                          _getTimeFromUser(isStartTime:false);
+                        },
+                        icon: const Icon(Icons.alarm)
+                      ),
                     ),
                   ),
                 ],
@@ -219,6 +234,47 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
 
     print ('$value');
+  }
+
+  void _getDateFromUser() async {
+   DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2015),
+      lastDate: DateTime(2030),
+    );
+
+   if(pickedDate == null) return;
+   setState(() {
+     _selectedDate = pickedDate;
+   });
+
+  }
+
+  void _getTimeFromUser({ required bool isStartTime}) async{
+    TimeOfDay? pickedTime = await showTimePicker(
+      initialEntryMode: TimePickerEntryMode.dial,
+      context: context,
+      initialTime: isStartTime?
+        TimeOfDay.fromDateTime(DateTime.now())
+          :
+        TimeOfDay.fromDateTime(DateTime.now().add(const Duration(minutes: 15)))
+      ,
+    );
+
+    if(pickedTime == null) {
+      debugPrint('Canceled or something error');
+      return;
+    }
+
+    setState(() {
+      String formattedTime = pickedTime.format(context);
+
+      isStartTime?
+        _startTime = formattedTime
+        :
+        _endTime = formattedTime;
+    });
   }
 
 }
