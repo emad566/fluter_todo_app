@@ -1,6 +1,6 @@
 class Task {
   
-  final int id;
+  int? id;
   final String title;
   final String note;
   final int isCompleted;
@@ -12,7 +12,7 @@ class Task {
   String? repeat;
 
   Task({
-    required this.id,
+    this.id,
     required this.title,
     required this.note,
     required this.isCompleted,

@@ -1,4 +1,5 @@
 import 'package:fluter_todo_app/controllers/task_controller.dart';
+import 'package:fluter_todo_app/models/task.dart';
 import 'package:fluter_todo_app/ui/theme.dart';
 import 'package:fluter_todo_app/ui/widgets/button.dart';
 import 'package:fluter_todo_app/ui/widgets/components.dart';
@@ -34,7 +35,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   List<int> remindList = [5,10,15,20];
   String _selectedRepeat = 'None';
   List<String> repeatList = ['None', 'Daily', 'Weekly', 'Monthly'];
-  Color _selectedColor = pinkClr;
+  int _selectedColor = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -145,25 +146,29 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           style: Themes.subHeadingStyle,
                         ),
                         Row(
-                          children: <Color>[primaryClr, pinkClr, orangeClr].map<Widget>((Color e) => GestureDetector(
+                          children: TaskController.taskColors.asMap().entries.map<Widget>((item) {
+                            Color color = item.value;
+
+                            return GestureDetector(
                             onTap: (){
                               setState(() {
-                                _selectedColor = e;
+                                _selectedColor = item.key;
                               });
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: CircleAvatar(
-                                backgroundColor: e,
+                                backgroundColor: color,
                                 radius: 20.0,
-                                child: (e != _selectedColor)? null : const Icon(
+                                child: (item.key != _selectedColor)? null : const Icon(
                                   Icons.done,
                                   color: whiteClr,
                                   size: 30,
                                 ),
                               ),
                             ),
-                          )).toList(),
+                          );
+                          }).toList(),
                         )
                       ],
                     ),
@@ -171,7 +176,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0),
                     child: MyButton(label: 'Save Task', onTab: (){
-
+                      _validateDate();
                     }),
                   ),
                 ],
@@ -182,4 +187,38 @@ class _AddTaskPageState extends State<AddTaskPage> {
       ),
     );
   }
+
+  _validateDate(){
+    if(_titleController.text.isNotEmpty && _noteController.text.isNotEmpty){
+      _addTaskToDb();
+      Get.back();
+    }else if(_titleController.text.isEmpty && _noteController.text.isEmpty){
+      Get.snackbar(
+        'required',
+        'All Fields are required',
+        snackPosition: SnackPosition.BOTTOM,
+        colorText: pinkClr,
+        icon: const Icon(Icons.warning_amber_rounded, color: Colors.red,)
+      );
+    }
+
+  }
+
+  _addTaskToDb() async{
+    int value = await _taskController.addTask(
+      task: Task(
+        title: _titleController.text,
+        note: _noteController.text,
+        isCompleted: 0,
+        date: DateFormat.yMd().format(_selectedDate),
+        startTime: _startTime,
+        endTime: _endTime,
+        color: _selectedColor,
+        remind: _selectedRemind
+      ),
+    );
+
+    print ('$value');
+  }
+
 }

@@ -1,8 +1,12 @@
+import 'dart:ui';
+
 import 'package:fluter_todo_app/models/task.dart';
+import 'package:fluter_todo_app/ui/theme.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class TaskController extends GetxController{
+  static final List<Color> taskColors = [primaryClr, pinkClr, orangeClr];
 
   final List<Task> taskList=  [
     Task(
@@ -92,6 +96,10 @@ class TaskController extends GetxController{
   ];
 
   void getTasks(){
+
+  }
+
+  addTask({required task}) {
 
   }
 }
