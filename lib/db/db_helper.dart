@@ -1,3 +1,4 @@
+import 'package:fluter_todo_app/models/task.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -15,7 +16,7 @@ class DBHelper {
 
     try{
       String databasesPath = '${await getDatabasesPath()}task.db';
-      var _db = await openDatabase(
+      _db = await openDatabase(
         databasesPath,
         version: _version,
         onCreate: (Database db, int version) async{
@@ -33,10 +34,37 @@ class DBHelper {
           await db.execute(sql);
         },
       );
-      // Get a location using getDatabasesPath
+
+      debugPrint('DataBase Created');
 
     }catch(e){
       print(e.toString());
     }
   }
+
+  static Future<int> insert(Task task) async{
+    debugPrint('Start insert');
+    return await _db!.insert(_tableName, task.toJson());
+  }
+
+  static Future<int> delete(Task task) async{
+    debugPrint('Start delete');
+    return await _db!.delete(_tableName, where: 'id = ?', whereArgs: [task.id]);
+  }
+
+  static Future<List<Map<String, dynamic>>> query(Task task) async{
+    debugPrint('Start query');
+    return await _db!.query(_tableName);
+  }
+
+  static Future<int> update(int id) async{
+    debugPrint('Start update');
+    return await _db!.rawUpdate('''
+    UPDATE taske set 
+    isCompleted = ?
+    where id ?
+    ''', [1, id]);
+  }
+
+
 }
