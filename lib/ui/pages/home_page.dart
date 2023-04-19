@@ -11,6 +11,7 @@ import 'package:fluter_todo_app/ui/widgets/button.dart';
 import 'package:fluter_todo_app/ui/widgets/components.dart';
 import 'package:fluter_todo_app/ui/widgets/task_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -56,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                 children: addTaskeDateList(),
               ),
 
-            if(SizeConfig.orientation == Orientation.portrait)
+            if(SizeConfig.orientation == Orientation.portrait && _taskController.taskList.isEmpty)
             const SizedBox(height: 70,),
             Expanded(child: _showTasks()),
             const SizedBox(height: 10,),
@@ -141,32 +142,25 @@ class _HomePageState extends State<HomePage> {
   }
 
   _showTasks() {
-    return GestureDetector(
-      onTap: (){
-        _showBottomSheet(context, Task(
-            color: 0,
-            title: 'Fist task',
-            date: '2023-12-04',
-            startTime: '2023-12-04',
-            endTime: '2023-12-04',
-            id: 1,
-            isCompleted: 0,
-            note: 'Task not note note not sdsd vewf',
-            remind: 5,
+    return ListView.builder(
+      scrollDirection: SizeConfig.orientation == Orientation.landscape? Axis.horizontal : Axis.vertical,
+      itemBuilder: (BuildContext context, int index){
+        Task task = _taskController.taskList[index];
+        return AnimationConfiguration.staggeredList(
+          position: index,
+          duration: const Duration(milliseconds: 1000),
+          child: SlideAnimation(
+            horizontalOffset: 300,
+            child: FadeInAnimation(
+              child: GestureDetector(
+                onTap: () => _showBottomSheet(context, task),
+                child: TaskTile(task: task,),
+              ),
+            ),
           ),
         );
       },
-      child: TaskTile(task: Task(
-        color: 0,
-        title: 'Fist task',
-        date: '2023-12-04',
-        startTime: '2023-12-04',
-        endTime: '2023-12-04',
-        id: 1,
-        isCompleted: 0,
-        note: 'Task not note note not sdsd vewf',
-        remind: 5,
-      ),),
+      itemCount: _taskController.taskList.length,
     );
   }
 
