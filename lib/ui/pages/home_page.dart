@@ -146,8 +146,8 @@ class _HomePageState extends State<HomePage> {
       scrollDirection: SizeConfig.orientation == Orientation.landscape? Axis.horizontal : Axis.vertical,
       itemBuilder: (BuildContext context, int index){
         Task task = _taskController.taskList[index];
-        var hour = int.parse(task.startTime.toString().split(':')[0]);
-        var minutes = int.parse(task.startTime.toString().split(':')[1]);
+        var hour = int.parse(task.startTime.split(':')[0]);
+        var minutes = int.parse(task.startTime.split(':')[1].split(' ')[0]);
 
         // var date = DateFormat.jm().parse(task.startTime);
         // var mTime = DateFormat('HH:mm').format(date);

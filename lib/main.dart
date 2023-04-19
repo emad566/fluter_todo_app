@@ -1,15 +1,20 @@
+import 'package:fluter_todo_app/db/db_helper.dart';
 import 'package:fluter_todo_app/services/notification_services.dart';
 import 'package:fluter_todo_app/services/theme_services.dart';
 import 'package:fluter_todo_app/ui/pages/home_page.dart';
 import 'package:fluter_todo_app/ui/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 
 void main() async{
-  runApp( const MyApp());
-  NotifyHelper().initializeNotification();
   // WidgetsFlutterBinding.ensureInitialized();
+  NotifyHelper().initializeNotification();
+  await DBHelper.initDB();
+  await GetStorage.init();
+  runApp( const MyApp());
+
 
 }
 
