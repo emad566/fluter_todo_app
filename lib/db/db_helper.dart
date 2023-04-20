@@ -1,4 +1,5 @@
 import 'package:fluter_todo_app/models/task.dart';
+import 'package:fluter_todo_app/services/notification_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -50,6 +51,12 @@ class DBHelper {
   static Future<int> delete(int taskId) async{
     debugPrint('Start delete');
     return await _db!.delete(_tableName, where: 'id = ?', whereArgs: [taskId]);
+  }
+
+  static Future<void> deleteAll() async{
+    debugPrint('Start deleteAll');
+    await _db!.delete(_tableName);
+    await NotifyHelper().cancelAllNotification();
   }
 
   static Future<List<Map<String, dynamic>>> query() async{

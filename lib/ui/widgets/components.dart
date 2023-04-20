@@ -1,3 +1,4 @@
+import 'package:fluter_todo_app/controllers/task_controller.dart';
 import 'package:fluter_todo_app/services/theme_services.dart';
 import 'package:fluter_todo_app/ui/theme.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,17 @@ AppBar myAppBar ({Function? setState, BuildContext? context, String? title, bool
         const Icon(Icons.nightlight_outlined, size: 24, color: whiteClr,)
         :
         const Icon(Icons.wb_sunny_outlined, size: 24, color: darkGreyClr,),
+      ),
+
+      const SizedBox(width: 20),
+      IconButton(
+        onPressed: () async{
+          await TaskController.controller.deleteAllTasks();
+        },
+        icon: Get.isDarkMode?
+        const Icon(Icons.cleaning_services_outlined, size: 24, color: whiteClr,)
+            :
+        const Icon(Icons.cleaning_services_outlined, size: 24, color: darkGreyClr,),
       ),
     ],
     elevation: 0,

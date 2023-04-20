@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
     _taskController.getTasks();
   }
 
-  final TaskController _taskController = Get.put(TaskController());
+  final TaskController _taskController = TaskController.controller;
   late DateTime _selectedDate = DateTime.now();
 
 
@@ -158,10 +158,15 @@ class _HomePageState extends State<HomePage> {
               var minutes = int.parse(task.startTime.split(':')[1].split(' ')[0]);
 
 
-              NotifyHelper().scheduleNotification(hour, minutes, task);
+              notifyHelper.scheduledNotification(hour, minutes, task);
 
               // print(task.date);
-              if(task.repeat == 'Daily' || task.date == DateFormat.yMd().format(_selectedDate)){
+              if(
+                  task.repeat == 'Daily'
+                  || task.date == DateFormat.yMd().format(_selectedDate)
+                  || (task.repeat == 'Weekly' && _selectedDate.difference(DateFormat.yMd().parse(task.date)).inDays %7 == 0)
+                  || (task.repeat == 'Monthly' && DateFormat.yMd().parse(task.date).day == _selectedDate.day)
+                ){
                 return AnimationConfiguration.staggeredList(
                   position: index,
                   duration: const Duration(milliseconds: 1000),
@@ -257,6 +262,7 @@ class _HomePageState extends State<HomePage> {
                     label: 'Task Completed',
                     onTap: () async{
                       await _taskController.updateToCompleted(taskId: task.id);
+                      await notifyHelper.cancelNotification(id: task.id!);
                       _taskController.getTasks();
                       Get.back();
                     },
@@ -267,10 +273,11 @@ class _HomePageState extends State<HomePage> {
                   label: 'Delete Task',
                   onTap: () async{
                     await _taskController.deleteTask(taskId: task.id);
+                    await notifyHelper.cancelNotification(id: task.id!);
                     _taskController.getTasks();
                     Get.back();
                   },
-                  clr: primaryClr
+                  clr: Colors.red
               ),
               Divider(color: Get.isDarkMode? Colors.grey : darkGreyClr,),
               _buildBottomSheet(

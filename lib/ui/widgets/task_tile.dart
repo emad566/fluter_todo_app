@@ -51,7 +51,7 @@ class TaskTile extends StatelessWidget {
                         Icon(Icons.calendar_month, color: grey200, size: 18,),
                         const SizedBox(width: 12,),
                         Text(
-                          '${task.date}',
+                          '${task.date} : ${task.repeat}',
                           style: GoogleFonts.lato(
                             textStyle: TextStyle(
                               fontSize: 13,

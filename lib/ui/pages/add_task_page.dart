@@ -220,7 +220,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   _addTaskToDb() async{
-    int value = await _taskController.addTask(
+    await _taskController.addTask(
       task: Task(
         title: _titleController.text,
         note: _noteController.text,
@@ -229,11 +229,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
         startTime: _startTime,
         endTime: _endTime,
         color: _selectedColor,
-        remind: _selectedRemind
+        remind: _selectedRemind,
+        repeat: _selectedRepeat,
       ),
     );
-
-    print ('$value');
   }
 
   void _getDateFromUser() async {
