@@ -207,7 +207,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     if(_titleController.text.isNotEmpty && _noteController.text.isNotEmpty){
       _addTaskToDb();
       Get.back();
-    }else if(_titleController.text.isEmpty && _noteController.text.isEmpty){
+    }else if(_titleController.text.isEmpty || _noteController.text.isEmpty){
       Get.snackbar(
         'required',
         'All Fields are required',

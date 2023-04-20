@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';
-
 class Task {
   
   int? id;
@@ -28,8 +26,7 @@ class Task {
 
   
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
+    Map<String, dynamic> taskJson =  {
       'title': title,
       'note': note,
       'isCompleted': isCompleted,
@@ -40,18 +37,23 @@ class Task {
       'remind': remind,
       'repeat': repeat,
     };
+    if(id != null){
+      taskJson['id'] = id;
+    }
+
+    return taskJson;
   }
 
   Task.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     title = json['title']?? '';
     note = json['note']?? '';
-    isCompleted = json['isCompleted'] == null? 0 : int.parse(json['isCompleted']);
+    isCompleted = json['isCompleted']?? 0;
     date = json['date']?? DateTime.now().toString();
     startTime = json['startTime']?? '00:00:00';
     endTime = json['endTime']?? '00:00:00';
-    color = json['color'] == null? 0 : int.parse(json['color']);
-    remind = json['remind'] == null? 0 : int.parse(json['remind']);
+    color = json['color']?? 0;
+    remind = json['remind']?? 0;
     repeat = json['repeat']?? '';
   }
 }

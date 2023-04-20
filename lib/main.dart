@@ -9,7 +9,7 @@ import 'package:get_storage/get_storage.dart';
 
 
 void main() async{
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   NotifyHelper().initializeNotification();
   await DBHelper.initDB();
   await GetStorage.init();

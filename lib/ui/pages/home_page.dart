@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
     notifyHelper = NotifyHelper();
     notifyHelper.requestIOSPermissions();
     notifyHelper.initializeNotification();
+    _taskController.getTasks();
   }
 
   final TaskController _taskController = Get.put(TaskController());
@@ -127,6 +128,7 @@ class _HomePageState extends State<HomePage> {
         onDateChange: (DateTime date){
           // setState(() {
             _selectedDate = date;
+            _taskController.getTasks();
           // });
         },
         // width: 70,
@@ -142,64 +144,82 @@ class _HomePageState extends State<HomePage> {
   }
 
   _showTasks() {
-    return ListView.builder(
-      scrollDirection: SizeConfig.orientation == Orientation.landscape? Axis.horizontal : Axis.vertical,
-      itemBuilder: (BuildContext context, int index){
-        Task task = _taskController.taskList[index];
-        var hour = int.parse(task.startTime.split(':')[0]);
-        var minutes = int.parse(task.startTime.split(':')[1].split(' ')[0]);
+    return Obx((){
+      if(_taskController.taskList.isEmpty){
+        return _noTasks();
+      }else{
+        return RefreshIndicator(
+          onRefresh: () async{ _taskController.getTasks(); },
+          child: ListView.builder(
+            scrollDirection: SizeConfig.orientation == Orientation.landscape? Axis.horizontal : Axis.vertical,
+            itemBuilder: (BuildContext context, int index){
+              Task task = _taskController.taskList[index];
+              var hour = int.parse(task.startTime.split(':')[0]);
+              var minutes = int.parse(task.startTime.split(':')[1].split(' ')[0]);
 
-        // var date = DateFormat.jm().parse(task.startTime);
-        // var mTime = DateFormat('HH:mm').format(date);
 
-        NotifyHelper().scheduleNotification(hour, minutes, task);
+              NotifyHelper().scheduleNotification(hour, minutes, task);
 
-        return AnimationConfiguration.staggeredList(
-          position: index,
-          duration: const Duration(milliseconds: 1000),
-          child: SlideAnimation(
-            horizontalOffset: 300,
-            child: FadeInAnimation(
-              child: GestureDetector(
-                onTap: () => _showBottomSheet(context, task),
-                child: TaskTile(task: task,),
-              ),
-            ),
+              // print(task.date);
+              if(task.repeat == 'Daily' || task.date == DateFormat.yMd().format(_selectedDate)){
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(milliseconds: 1000),
+                  child: SlideAnimation(
+                    horizontalOffset: 300,
+                    child: FadeInAnimation(
+                      child: GestureDetector(
+                        onTap: () => _showBottomSheet(context, task),
+                        child: TaskTile(task: task,),
+                      ),
+                    ),
+                  ),
+                );
+              }else {
+                return Container();
+              }
+
+            },
+            itemCount: _taskController.taskList.length,
           ),
         );
-      },
-      itemCount: _taskController.taskList.length,
-    );
+      }
+    });
   }
 
   _noTasks() {
     return Column(
       children: [
         Expanded(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Wrap(
-                direction: Axis.horizontal,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                alignment: WrapAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    'assets/images/task.svg',
-                    color: primaryClr.withOpacity(0.5),
-                    height: 90,
-                    semanticsLabel: 'Task',
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 30.0),
-                    width: SizeConfig.orientation == Orientation.portrait? double.infinity : SizeConfig.screenWidth*.7,
-                    child: Text(
-                      'You do not have any task yet, Add new task to make your days to make your day products',
-                      style: Themes.subHeadingStyle,
-                      textAlign: TextAlign.center,
+          child: RefreshIndicator(
+            onRefresh: () async{ _taskController.getTasks(); },
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Wrap(
+                  direction: Axis.horizontal,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  alignment: WrapAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/images/task.svg',
+                      // ignore: deprecated_member_use
+                      color: primaryClr.withOpacity(0.5),
+                      height: 90,
+                      semanticsLabel: 'Task',
                     ),
-                  ),
-                ],
+                    Container(
+                      margin: const EdgeInsets.only(top: 30.0),
+                      width: SizeConfig.orientation == Orientation.portrait? double.infinity : SizeConfig.screenWidth*.7,
+                      child: Text(
+                        'You do not have any task yet, Add new task to make your days to make your day products',
+                        style: Themes.subHeadingStyle,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -235,7 +255,9 @@ class _HomePageState extends State<HomePage> {
                   Container()
                   : _buildBottomSheet(
                     label: 'Task Completed',
-                    onTap: (){
+                    onTap: () async{
+                      await _taskController.updateToCompleted(taskId: task.id);
+                      _taskController.getTasks();
                       Get.back();
                     },
                     clr: primaryClr
@@ -243,7 +265,9 @@ class _HomePageState extends State<HomePage> {
               Divider(color: Get.isDarkMode? Colors.grey : darkGreyClr,),
               _buildBottomSheet(
                   label: 'Delete Task',
-                  onTap: (){
+                  onTap: () async{
+                    await _taskController.deleteTask(taskId: task.id);
+                    _taskController.getTasks();
                     Get.back();
                   },
                   clr: primaryClr
@@ -272,7 +296,7 @@ class _HomePageState extends State<HomePage> {
   }){
     return GestureDetector(
       onTap: (){
-        Get.back();
+        onTap();
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 4),
